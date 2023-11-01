@@ -96,6 +96,7 @@ const Home = () => {
         const res = await axios.get("http://localhost:8081/allproducts");
         if (res.status === 200) {
           setProducts(res.data);
+          console.log(res.data);
           setLoading(false);
         }
       } catch (error) {

@@ -393,7 +393,7 @@ app.post(
 );
 
 app.get("/allproducts", async (req, res) => {
-  const getQuery = "SELECT * FROM products";
+  const getQuery = "SELECT * FROM products ORDER BY product_id";
 
   db.query(getQuery, (err, data) => {
     if (err) {
@@ -457,6 +457,7 @@ app.post("/addpdt", upload.array("images", 2), (req, res) => {
     latitude,
     longitude
   ];
+  console.log(values.latitude);
 
   db.query(query, values, (err, data) => {
     if (err) {

@@ -12,6 +12,7 @@ const AddProduct = () => {
   const autocompleteRef = useRef(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+ 
 
   const [product, setProduct] = useState({
     title: "",
@@ -69,16 +70,17 @@ const AddProduct = () => {
   const handleSuggestionClick = (suggestion) => {
     setProduct({ ...product, location: suggestion.properties.formatted });
     setSuggestions([]);
-    const latitude = suggestion.properties.lat;
-    const longitude = suggestion.properties.lon;
-    setLatitude(latitude);
-    setLongitude(longitude);
+    const latitude1 = suggestion.properties.lat;
+    const longitude1 = suggestion.properties.lon;
+    setLatitude(latitude1);
+    setLongitude(longitude1);
     console.log("Selected Location:", suggestion.properties.formatted);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    console.log(latitude);
+    console.log(longitude);
     const formData = new FormData();
     formData.append("title", product.title);
     formData.append("price", product.price);

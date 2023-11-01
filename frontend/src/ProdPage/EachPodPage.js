@@ -37,6 +37,7 @@ const EachProdpage = () => {
             try {
                 const response = await axios.get(`http://localhost:8081/page/${prodid}`);
                 setData(response.data);
+                console.log(response.data);
                 setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);

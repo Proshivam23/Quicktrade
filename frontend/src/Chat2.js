@@ -26,17 +26,12 @@ function Chat() {
             try {
                 const response = await axios.get(`http://localhost:8081/getmessage/${selectedChat}`);
                 setMessages(response.data);
-                setIsLoading(false);
+                // console.log(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         }
-
-        const messageInterval = setInterval(fetchMessages, 3000);
-
-        return () => {
-            clearInterval(messageInterval);
-        };
+        setInterval(fetchMessages, 3000);
     }, [selectedChat]);
 
     useEffect(() => {
@@ -44,7 +39,7 @@ function Chat() {
             try {
                 const response = await axios.get(`http://localhost:8081/getmessage/${selectedChat}`);
                 setMessages(response.data);
-                setIsLoading(false);
+                // setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -64,6 +59,7 @@ function Chat() {
             .then((response) => {
                 console.log(response.data);
                 setDetails(response.data);
+                setIsLoading(false);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -76,21 +72,20 @@ function Chat() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setSendData({ ...sendData, receiver: selectedChat });
-        axios
-            .post('http://localhost:8081/handleSubmit', sendData)
+        sendData.receiver = selectedChat;
+        axios.post('http://localhost:8081/handleSubmit', sendData)
             .then((response) => { })
             .catch((error) => {
                 console.error('Error sending msg:', error);
             });
 
-        // Reset the input field
-        setSendData({ ...sendData, content: '' });
+        document.form2.reset();
     };
 
     return (
         <div className="App">
-            (isLoading?:<div></div>:
+            {isLoading? <div></div>:
+            <div>
             <header className="bg-blue-500 text-white p-4">
                 <h1 className="text-2xl font-bold">Chat</h1>
             </header>
@@ -137,6 +132,8 @@ function Chat() {
                     </div>
                 </div>
             </div>
+            </div>
+}
         </div>
     );
 }

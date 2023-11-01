@@ -20,6 +20,8 @@ import ListedItems from "./Listed/ListedItems";
 import ProfilePage from "./Profile/ProfilePage";
 import Purchases from "./Purchases/Purchases";
 import UserReviews from "./Reviews/UserReviews";
+import Map from "./Map";
+
 // import Buy from "./Buy";
 import Buy from "./Buy";
 // import Chat from "./Chat";
@@ -51,6 +53,8 @@ function App() {
           <Route path="/chat2" element={<Chat2/>}/>
           <Route path="/chat" element={<Chat />} />
           <Route path="/buy" element={<Buy/>}/>
+          <Route path="/map" element={<Map/>} />
+
         </Routes>
       </CookiesProvider>
     </BrowserRouter>
