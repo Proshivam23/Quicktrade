@@ -471,7 +471,6 @@ const Home = () => {
               {filterProducts(products)
                 .filter(filterProductsByPrice)
                 .map((product) => (
-                  product.sold?<div className="hidden"></div>:
                   <div key={product.id}>
                     <Link
                       to={`./eachprodpage/${product.id}`}

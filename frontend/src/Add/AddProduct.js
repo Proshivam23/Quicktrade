@@ -86,6 +86,8 @@ const AddProduct = () => {
     formData.append("category", product.category);
     formData.append("location", product.location);
     formData.append("seller_id", user.id);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
     product.images.forEach((image, index) => {
       formData.append(`images`, image);
     });
