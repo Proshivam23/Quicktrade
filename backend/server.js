@@ -118,8 +118,8 @@ app.get("/getdetails/:userid", (req, res) => {
 
 app.get('/chat/:userid', (req, res) => {
   const id = req.params.userid;
-  const sql = "SELECT DISTINCT users.userid, users.username FROM users WHERE users.userid IN (SELECT DISTINCT sender_id FROM messaging WHERE receiver_id = ?) AND users.userid IN (SELECT DISTINCT receiver_id FROM messaging WHERE sender_id = ?)"
-  const values = [id, id]
+  const sql = "SELECT DISTINCT users.userid, users.username FROM users INNER join messaging WHERE receiver_id = ?"
+  const values = [id]
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error validating data:', err);
@@ -148,13 +148,27 @@ app.get('/page/:prodid', (req, res) => {
 
 
 
-app.post('/bought/:sellid', (req, res) => {
+app.post('/bought/:sellid/:userid', (req, res) => {
   const id = req.params.sellid;
+  const id2 = req.params.userid;
   console.log(id);
   const sql = "UPDATE products SET `truefalse` = ? WHERE `product_id` = ?";
+  const sql2 = "insert into user_purchases(`product_id`, `purchase_date`, userid) values(?,?,?)";
+
   const num = 1;
   const values = [num, id];
   db.query(sql, values, (err, results) => {
+    if (err) {
+      console.error('Error updating product:', err);
+      return res.status(500).json({ error: 'Failed to update product' });
+    } else {
+      // Product updated successfully
+      res.status(200).json({ message: 'Product updated successfully' });
+    }
+  });
+  const date = new Date();
+  const values2 = [id,date, id2];
+  db.query(sql2, values2, (err, results) => {
     if (err) {
       console.error('Error updating product:', err);
       return res.status(500).json({ error: 'Failed to update product' });
@@ -729,6 +743,7 @@ app.get("/user-reviews/:userId", (req, res) => {
   });
 });
 
+
 //delete user-review
 app.delete("/delete-review/:review_id", (req, res) => {
   const reviewId = req.params.review_id;
@@ -744,6 +759,27 @@ app.delete("/delete-review/:review_id", (req, res) => {
     }
   });
 });
+
+app.get("/seller-reviews/:sellerId", (req, res) => {
+  const sellerId = req.params.sellerId;
+
+  const sql = `
+          SELECT sr.review_id as id, sr.rating as rating, sr.review_content as content, sr.review_date as date, u.username as name, u.profile_pic AS pic
+          FROM seller_reviews AS sr
+          JOIN users AS u ON sr.userid = u.userid
+          WHERE sr.seller_id = ?
+        `;
+
+  db.query(sql, [sellerId], (error, results) => {
+    if (error) {
+      console.error("Error fetching seller reviews:", error);
+      res.status(500).json({ error: "Failed to fetch seller reviews" });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+
 
 
 app.listen(8081, () => {

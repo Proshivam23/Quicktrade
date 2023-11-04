@@ -41,7 +41,10 @@ const Purchases = () => {
   const user = cookies.user || null;
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
-    setOpen(!open);
+    setOpen(true);
+  };
+  const handleclose = () => {
+    setOpen(false);
   };
   useEffect(() => {
     const fetchListedItems = async () => {
@@ -217,7 +220,7 @@ const Purchases = () => {
                     <Button
                       variant="text"
                       color="blue-gray"
-                      onClick={handleOpen}
+                      onClick={handleclose}
                       className="mr-1"
                     >
                       <span>Cancel</span>
@@ -230,8 +233,7 @@ const Purchases = () => {
                       <span>ADD</span>
                     </Button>
                   </DialogFooter>
-                </Dialog>
-              </div>
+                </Dialog>              </div>
             ))}
           </div>
         </div>

@@ -106,7 +106,7 @@ const Home = () => {
     }
 
     fetchData();
-    
+
   }, []);
 
   useEffect(() => {
@@ -176,8 +176,9 @@ const Home = () => {
 
       const matchesLocation =
         !suggestionSelected || product.location.includes(selectedLocation);
+      const isSold = product.sold === 0;
 
-      return matchesCategory && matchesSearch && matchesLocation;
+      return matchesCategory && matchesSearch && matchesLocation && isSold;
     });
   };
   //favorite clicks

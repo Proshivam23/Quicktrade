@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Map from "../Map"
+import SellerReview from '../components/SellerReview';
 
 const EachProdpage = () => {
     const [cookies] = useCookies(['user']);
@@ -122,15 +123,15 @@ const EachProdpage = () => {
                     </div>
                 </div>
             )}
-            <Map latitude={data[0].lat} longitude={data[0].lon}></Map>
+            {data[0]&&<Map latitude={data[0].lat} longitude={data[0].lon}></Map>}
 
             <div>
                 <h3>Seller Reviews</h3>
-
-                <form onSubmit={handlereviewsubmit}>
+                {data[0] && <SellerReview id={data[0].seller_id}></SellerReview>}
+                {/* <form onSubmit={handlereviewsubmit}>
                     <input onChange={handleInput} name='content' type='text' className='text-sm' placeholder='Enter Reviews'></input>
                     <button className='ml-2 rounded-xl border-2 p-2'>Submit</button>
-                </form>
+                </form> */}
             </div>
         </div>
     );

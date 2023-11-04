@@ -6,6 +6,8 @@ import axios from 'axios';
 const Buy = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [cookies] = useCookies(['user']);
+    const user = cookies.user;
     const data = location.state && location.state.someData;
     console.log(data);
     const [prod, setprod] = useState({});
@@ -28,7 +30,7 @@ const Buy = () => {
         console.log("working");
         async function fetchData() {
                     try {
-                        const response = await axios.post(`http://localhost:8081/bought/${data.product_id}`);
+                        const response = await axios.post(`http://localhost:8081/bought/${data.product_id}/${user.id}`);
                         
                     } catch (error) {
                         console.error('Error fetching data:', error);
