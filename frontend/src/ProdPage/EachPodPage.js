@@ -124,7 +124,7 @@ const EachProdpage = () => {
                 </div>
             )}
             {data[0]&&<Map latitude={data[0].lat} longitude={data[0].lon}></Map>}
-
+                <div>{data[0] && <div>{data[0].seller_id}</div>}</div>
             <div>
                 <h3>Seller Reviews</h3>
                 {data[0] && <SellerReview id={data[0].seller_id}></SellerReview>}

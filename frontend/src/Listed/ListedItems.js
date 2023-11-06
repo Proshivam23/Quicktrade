@@ -53,7 +53,7 @@ const ListedItems = () => {
   //handle delete
   const handleDelete = async (itemId) => {
     try {
-      const res = await axios.delete(`http://localhost:8081/delete-products/${itemId}`);
+      const res = await axios.post(`http://localhost:8081/delete-products/${itemId}`);
       if(res.status===200){
         toast.success("Deleted product successfully", {
             position: toast.POSITION.TOP_CENTER,
@@ -144,9 +144,15 @@ const ListedItems = () => {
                 <p className="mt-1 text-lg font-medium text-gray-900">
                   ₹{product.price}
                 </p>
-                <Button onClick={handleOpen} variant="gradiant" className="m-0">
-                  Unlist
-                </Button>
+                {product.truefalse === 1 ? (
+                  <Button  variant="gradiant" className="m-0">
+                    Sold
+                  </Button>
+                ) : (
+                  <Button onClick={handleOpen} variant="gradiant" className="m-0">
+                    {product.active ===1 ? "Unlist" : "re-list"}
+                  </Button>
+                )}
                 <Dialog open={open} handler={handleOpen}>
                   <DialogHeader>Are you sure?</DialogHeader>
                   <DialogBody>

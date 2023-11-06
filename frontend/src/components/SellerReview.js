@@ -3,7 +3,7 @@ import axios from "axios";
 import { Rating } from "@material-tailwind/react";
 const SellerReview = (id2) => {
   const [reviews, setReviews] = useState([]);
-  const id = id2; // Replace this with the actual seller's ID
+  const {id} = id2; // Replace this with the actual seller's ID
 
   useEffect(() => {
     const fetchSellerReviews = async () => {
@@ -11,6 +11,8 @@ const SellerReview = (id2) => {
         const response = await axios.get(`http://localhost:8081/seller-reviews/${id}`);
         if (response.status === 200) {
           setReviews(response.data);
+          // console.log(id);
+          // console.log(response.data);
         }
       } catch (error) {
         console.error("Error fetching seller reviews:", error);

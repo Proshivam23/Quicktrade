@@ -12,7 +12,7 @@ const AddProduct = () => {
   const autocompleteRef = useRef(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
- 
+ const [categories,setCategories]=useState([])
 
   const [product, setProduct] = useState({
     title: "",
@@ -76,7 +76,20 @@ const AddProduct = () => {
     setLongitude(longitude1);
     console.log("Selected Location:", suggestion.properties.formatted);
   };
-
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("http://localhost:8081/allcategories");
+        if (response.status === 200) {
+          setCategories(response.data);
+          console.log("data",response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchCategories();
+  }, [categories]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(latitude);
@@ -112,7 +125,7 @@ const AddProduct = () => {
       console.error("Error adding product", error);
     }
   };
-  const categories = ["Electronics", "Clothing", "Books", "Furniture", "Toys" ,"Stationary"];
+  // const categories = ["Electronics", "Clothing", "Books", "Furniture", "Toys" ,"Stationary"];
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -151,7 +164,7 @@ const AddProduct = () => {
                 id="price"
               />
             </div>
-            <div className="mb-2">
+            {categories&&  <div className="mb-2">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="category"
@@ -168,12 +181,12 @@ const AddProduct = () => {
               >
                 <option value="">Select a category</option>
                 {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
+                  <option key={category.id} value={category.name}>
+                    {category.name}
                   </option>
                 ))}
               </select>
-            </div>
+            </div>}
             <div className="mb-2 ">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"

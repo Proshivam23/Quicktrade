@@ -33,19 +33,14 @@ import {
 
 const Purchases = () => {
   const navigate = useNavigate();
-  const [comment,setComment] = useState("");
-  const [rating,setRating] = useState(1);
-  console.log(rating);
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState(1);
   const [listedItems, setListedItems] = useState([]);
   const [cookies, setCookies, removeCookies] = useCookies(["user"]);
   const user = cookies.user || null;
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleclose = () => {
-    setOpen(false);
-  };
+  const [openDialogs, setOpenDialogs] = useState({});
+  const [currentSellerId, setCurrentSellerId] = useState(null);
+
   useEffect(() => {
     const fetchListedItems = async () => {
       try {
@@ -53,8 +48,12 @@ const Purchases = () => {
           `http://localhost:8081/user-purchases/${user.id}`
         );
         if (res.status === 200) {
-          console.log(res.data);
           setListedItems(res.data);
+          const initialOpenDialogs = {};
+          res.data.forEach((product) => {
+            initialOpenDialogs[product.product_id] = false;
+          });
+          setOpenDialogs(initialOpenDialogs);
         }
       } catch (error) {
         console.log(error);
@@ -63,42 +62,52 @@ const Purchases = () => {
     fetchListedItems();
   }, [user.id]);
 
-  //handle delete
-  const handleComment = async (seller_id) => {
+  const handleDialogOpen = (productId, sellerId) => {
+    setOpenDialogs({
+      ...openDialogs,
+      [productId]: true,
+    });
+    setCurrentSellerId(sellerId);
+  };
+
+  const handleDialogClose = (productId) => {
+    setOpenDialogs({
+      ...openDialogs,
+      [productId]: false,
+    });
+    setCurrentSellerId(null);
+  };
+
+  const handleComment = async (sellerId, productId) => {
     try {
       const res = await axios.post(
-        `http://localhost:8081/add-comment/`,{c_t:comment,s_id:seller_id,id:user.id,rating: rating }
+        `http://localhost:8081/add-comment/`,
+        { c_t: comment, s_id: sellerId, id: user.id, rating: rating }
       );
       if (res.status === 200) {
         toast.success("Review Added Successfully", {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 2000,
         });
-       
-        setOpen(!open);
+        handleDialogClose(productId); // Close the dialog after adding the review
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  //handle log out
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleRating = (value) => {
+    setRating(value);
+  };
+
   const handleLogOut = () => {
     removeCookies("user", [{ path: "/", domain: "localhost" }]);
     navigate("/");
   };
-
-  //handle comment change 
-  const handleCommentChange = (e) => {
-    setComment(e.target.value);
-    console.log(comment);
-  };
-
-    //handle rating change
-    const handleRating = (value) => {
-        setRating(value);
-        console.log(rating);
-    }
 
   return (
     <div className="flex">
@@ -131,17 +140,19 @@ const Purchases = () => {
               <ListItemPrefix>
                 <UserCircleIcon className="h-5 w-5" />
               </ListItemPrefix>
-             <Link to="/profile" className="no-underline decoration-none">Profile</Link> 
+              <Link to="/profile" className="no-underline decoration-none">
+                Profile
+              </Link>
             </ListItem>
             <Link to="/user-review" className="no-underline">
-            <ListItem>
-              <ListItemPrefix>
-                <Cog6ToothIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Added reviews
-            </ListItem>
+              <ListItem>
+                <ListItemPrefix>
+                  <Cog6ToothIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                Added reviews
+              </ListItem>
             </Link>
-            
+
             <ListItem>
               <ListItemPrefix>
                 <PowerIcon className="h-5 w-5" />
@@ -174,16 +185,23 @@ const Purchases = () => {
                   ₹{product.price}
                 </p>
                 <p className="font-semibold">
-                  Seller Name:{product.seller_name}
+                  Seller Name: {product.seller_name}
                 </p>
                 <p className="mb-0 text-gray-900">Purchase Date:</p>
                 <p className="text-gray-400">{product.date}</p>
-                <Button onClick={handleOpen} variant="gradiant" className="m-0">
+                <Button
+                  onClick={() => handleDialogOpen(product.product_id, product.seller_id)}
+                  variant="gradiant"
+                  className="m-0"
+                >
                   Add Review
                 </Button>
-                <Dialog open={open} handler={handleOpen}>
+                <Dialog open={openDialogs[product.product_id]} handler={handleDialogClose}>
                   <DialogHeader>
-                    Add review for the seller:{product.seller_name}
+                    Add review for the seller:{" "}
+                    {currentSellerId
+                      ? listedItems.find((item) => item.seller_id === currentSellerId).seller_name
+                      : ""}
                   </DialogHeader>
 
                   <DialogBody>
@@ -220,7 +238,7 @@ const Purchases = () => {
                     <Button
                       variant="text"
                       color="blue-gray"
-                      onClick={handleclose}
+                      onClick={() => handleDialogClose(product.product_id)}
                       className="mr-1"
                     >
                       <span>Cancel</span>
@@ -228,12 +246,13 @@ const Purchases = () => {
                     <Button
                       variant="gradient"
                       color="green"
-                      onClick={() => handleComment(product.seller_id)}
+                      onClick={() => handleComment(currentSellerId, product.product_id)}
                     >
                       <span>ADD</span>
                     </Button>
                   </DialogFooter>
-                </Dialog>              </div>
+                </Dialog>
+              </div>
             ))}
           </div>
         </div>

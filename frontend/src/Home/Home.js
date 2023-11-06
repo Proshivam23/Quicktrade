@@ -20,7 +20,7 @@ import PriceFilter from "../components/PriceFilter";
 const Home = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
   const user = cookies.user;
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -177,8 +177,8 @@ const Home = () => {
       const matchesLocation =
         !suggestionSelected || product.location.includes(selectedLocation);
       const isSold = product.sold === 0;
-
-      return matchesCategory && matchesSearch && matchesLocation && isSold;
+      const active = product.active === 1;
+      return matchesCategory && matchesSearch && matchesLocation && isSold && active;
     });
   };
   //favorite clicks
@@ -224,6 +224,7 @@ const Home = () => {
 
   return (
     <div>
+      
       <ToastContainer />
       <div className="bg-white shadow-lg">
         <div className="max-w-screen-xl mx-auto px-4 py-2 flex justify-between items-center">

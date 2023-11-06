@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(
       null,
-      "D:/USER DATA/Downloads/Quick/New/frontend/public"
+      "C:/Users/GAJ/Desktop/Project/New-main/New-main/frontend/public/"
     ); // Specify the destination folder for uploads
   },
   filename: (req, file, cb) => {
@@ -148,36 +148,48 @@ app.get('/page/:prodid', (req, res) => {
 
 
 
-app.post('/bought/:sellid/:userid', (req, res) => {
+app.post('/bought/:sellid/:userid', async (req, res) => {
   const id = req.params.sellid;
   const id2 = req.params.userid;
   console.log(id);
   const sql = "UPDATE products SET `truefalse` = ? WHERE `product_id` = ?";
-  const sql2 = "insert into user_purchases(`product_id`, `purchase_date`, userid) values(?,?,?)";
-
+  const sql2 = "INSERT INTO user_purchases(`product_id`, `purchase_date`, `userid`) VALUES (?, ?, ?)";
   const num = 1;
-  const values = [num, id];
-  db.query(sql, values, (err, results) => {
-    if (err) {
-      console.error('Error updating product:', err);
-      return res.status(500).json({ error: 'Failed to update product' });
-    } else {
-      // Product updated successfully
-      res.status(200).json({ message: 'Product updated successfully' });
-    }
-  });
   const date = new Date();
-  const values2 = [id,date, id2];
-  db.query(sql2, values2, (err, results) => {
-    if (err) {
-      console.error('Error updating product:', err);
-      return res.status(500).json({ error: 'Failed to update product' });
-    } else {
-      // Product updated successfully
-      res.status(200).json({ message: 'Product updated successfully' });
-    }
-  });
+
+  try {
+    // Update the product in the database
+    await new Promise((resolve, reject) => {
+      db.query(sql, [num, id], (err, results) => {
+        if (err) {
+          console.error('Error updating product:', err);
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    // Insert the user purchase record in the database
+    await new Promise((resolve, reject) => {
+      db.query(sql2, [id, date, id2], (err, results) => {
+        if (err) {
+          console.error('Error inserting user purchase record:', err);
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    // Both database operations were successful
+    res.status(200).json({ message: 'Product updated successfully' });
+  } catch (err) {
+    // Handle errors
+    res.status(500).json({ error: 'Failed to update product' });
+  }
 });
+
 
 
 app.post('/handleSubmit', (req, res) => {
@@ -425,7 +437,8 @@ app.get("/allproducts", async (req, res) => {
         seller_id: productData.seller_id,
         image1: productData.image1,
         image2: productData.image2,
-        sold: productData.truefalse
+        sold: productData.truefalse,
+        active: productData.active,
       }));
       res.status(200).json(products);
     }
@@ -483,11 +496,13 @@ app.post("/addpdt", upload.array("images", 2), (req, res) => {
 
 });
 
-app.delete("/delete-product/:productId", (req, res) => {
+app.post("/delete-product/:productId", (req, res) => {
   const id = req.params.productId;
-  const query = "DELETE FROM products where product_id = ?";
+  const active = 0;
+  const values =[active,id];
+  const query = "UPDATE products set active=? where product_id = ?";
 
-  db.query(query, id, (err, data) => {
+  db.query(query, values, (err, data) => {
     if (err) {
       console.log(err);
       res.status(400).json({ message: "failed to delete product" });
@@ -780,6 +795,42 @@ app.get("/seller-reviews/:sellerId", (req, res) => {
   });
 });
 
+app.get("/allcategories", async (req, res) => {
+  const getQuery = "SELECT * FROM categories";
+
+  db.query(getQuery, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ message: "categories not found" });
+    } else {
+      const categories = data.map((categoryData) => ({
+        id: categoryData.id,
+        name: categoryData.category,
+      }));
+      res.status(200).json(categories);
+    }
+  });
+});
+app.post('/add-category', (req, res) => {
+  const { name } = req.body;
+
+  // You can add validation here to check if 'name' is provided and is valid.
+
+  const sql = "INSERT INTO categories (category) VALUES (?)";
+  const values = [name];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error adding category:', err);
+      return res.status(500).json({ error: 'Failed to add category' });
+    }
+
+    // Assuming the 'id' is auto-generated and you want to retrieve it.
+    const insertedCategoryId = result.insertId;
+
+    res.status(201).json({ id: insertedCategoryId, name });
+  });
+});
 
 
 app.listen(8081, () => {
