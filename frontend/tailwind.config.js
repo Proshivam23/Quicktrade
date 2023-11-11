@@ -11,7 +11,12 @@ module.exports = withMT({
       colors:{
         'fig': '#BABABA',
         'but': '#00789E'
-      }
+      },
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans'],
+        outfit: ['Outfit', 'sans'],
+        cursive: ['Agbalumo', 'cursive'],
+      },
     },
     corePlugins: {
       aspectRatio: false,

@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(
       null,
-      "D:/USER DATA/Downloads/Quick/New/frontend/public"
+      "C:/Users/GAJ/Desktop/Project/vs_push/Quicktrade/frontend/public"
     ); // Specify the destination folder for uploads
   },
   filename: (req, file, cb) => {

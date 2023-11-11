@@ -14,7 +14,7 @@ const Map = ({latitude,longitude}) => {
           center={[latitude, longitude]}
           zoom={13}
           scrollWheelZoom={true}
-          style={{ width: "25%", height: "calc(100vh - 20rem)" }}
+          style={{ width: "25%", height: "calc(100vh - 20rem)"}}
         >
           <TileLayer
             url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"

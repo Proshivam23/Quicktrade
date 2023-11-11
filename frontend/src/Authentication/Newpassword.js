@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation,useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 const Newpassword = () => {
     const [passwords, setPasswords] = useState({
         newPassword: '',

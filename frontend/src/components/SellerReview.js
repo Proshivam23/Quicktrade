@@ -12,7 +12,7 @@ const SellerReview = (id2) => {
         if (response.status === 200) {
           setReviews(response.data);
           // console.log(id);
-          // console.log(response.data);
+          console.log(response.data);
         }
       } catch (error) {
         console.error("Error fetching seller reviews:", error);
@@ -35,6 +35,7 @@ const SellerReview = (id2) => {
               <div className="flex items-center mb-2">
                 <img src={review.pic} alt={review.name} className="w-10 h-10 rounded-full mr-4" />
                 <div>
+                  
                   <h3 className="text-lg font-semibold">{review.name}</h3>
                   <Rating value={review.rating} readonly/>
                 </div>

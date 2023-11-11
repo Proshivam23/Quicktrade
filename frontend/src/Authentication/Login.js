@@ -5,7 +5,7 @@ import Navbar from "../Navbar";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import image from 'D:/USER DATA/Downloads/Quick/New/frontend/src/img/bg1.jpg'
+import image from 'C:/Users/GAJ/Desktop/Project/vs_push/Quicktrade/frontend/src/img/bg1.jpg'
 
 import { useCookies } from "react-cookie";
 

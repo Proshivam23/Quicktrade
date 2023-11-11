@@ -232,7 +232,7 @@ const Home = () => {
             <img src="store.png" alt="store" className="h-5 w-5" />
             <a
               href="#"
-              className="text-lg font-semibold text-gray-900 no-underline hover:text-blue-600 ml-2 "
+              className="text-lg  font-cursive font-semibold text-blue-600 no-underline hover:text-blue-900 ml-2 "
             >
               Quick Trade
             </a>
