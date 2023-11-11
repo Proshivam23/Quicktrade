@@ -23,6 +23,7 @@ import Purchases from "./Purchases/Purchases";
 import UserReviews from "./Reviews/UserReviews";
 import Map from "./Map";
 import SellerReview from "./components/SellerReview";
+import Favour from './Favorites'
 
 // import Buy from "./Buy";
 import Buy from "./Buy";
@@ -64,6 +65,7 @@ function App() {
           <Route path="/buy" element={<Buy/>}/>
           <Route path="/map" element={<Map/>} />
           <Route path="/sr" element={<SellerReview/>} />
+          <Route path="/Favourites" element={<Favour/>} />
 
         </Routes>
       </CookiesProvider>

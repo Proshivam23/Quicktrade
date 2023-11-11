@@ -115,7 +115,41 @@ app.get("/getdetails/:userid", (req, res) => {
     }
   });
 });
+app.get('/favor/:userid',(req, res)=>{
+  const id = req.params.userid;
+  // console.log(id);
+  const sql = `SELECT products.* 
+  FROM products 
+  INNER JOIN favorites ON products.product_id = favorites.product_id 
+  WHERE favorites.userid = ? AND products.truefalse != 1`
 
+  const value = [id];
+
+  db.query(sql,value, (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ message: "Products not found" });
+    } else {
+      const products = data.map((productData) => ({
+        id: productData.product_id,
+        title: productData.title,
+        description: productData.description,
+        price: productData.price,
+        category: productData.category,
+        posting_date: productData.posting_date,
+        location: productData.location,
+        seller_id: productData.seller_id,
+        image1: productData.image1,
+        image2: productData.image2,
+        sold: productData.truefalse,
+        active: productData.active,
+      }));
+      // console.log(products);
+      res.status(200).json(products);
+    }
+  });
+
+})
 app.get('/chat/:userid', (req, res) => {
   const id = req.params.userid;
   const sql = `SELECT DISTINCT users.userid, users.username

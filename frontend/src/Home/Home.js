@@ -320,6 +320,15 @@ const Home = () => {
                         Purchases
                       </Link>
                       <Link
+                        to="/favourites"
+                        className="text-gray-700 block px-4 py-2 text-sm"
+                        role="menuitem"
+                        tabIndex="-1"
+                        id="menu-item-1"
+                      >
+                        Favourites
+                      </Link>
+                      <Link
                         to={`/listed`}
                         className="text-gray-700 block px-4 py-2 text-sm"
                         role="menuitem"
