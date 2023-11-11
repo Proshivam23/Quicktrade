@@ -51,10 +51,10 @@ const UserReviews = () => {
       console.error("Error deleting review:", error);
     }
   };
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  return (<div className="w-screen h-screen">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m-4 ">
       {reviews.map((review) => (
-        <Card key={review.id} className="p-4">
+        <Card key={review.id} className="p-4 hover:scale-105 transition ease-out duration-200">
           <div className="mb-2">
             <img
               src={review.pic} // Replace with the actual profile picture URL
@@ -108,6 +108,7 @@ const UserReviews = () => {
           </Dialog>
         </Card>
       ))}
+    </div>
     </div>
   );
 };

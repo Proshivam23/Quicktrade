@@ -1,6 +1,7 @@
 import "./App.css";
 import Login from "./Authentication/Login";
 import Navbar from "./Navbar";
+import Navbar2 from "./Navbar2";
 import OtpInput from "./Authentication/Otpinput";
 import Signup from "./Authentication/Signup";
 import { Routes, Route, BrowserRouter, Switch } from "react-router-dom";
@@ -31,6 +32,13 @@ import Chat2 from "./Chat2";
 function App() {
   return (
     <BrowserRouter>
+    <Routes>
+    <Route excat path="/" element={<Navbar />} />
+    <Route excat path="/chat" element={<Navbar2 />} />
+    <Route path="/Home/eachprodpage/:prodid" element={<Navbar2 />} />
+    <Route path="/user-review" element={<Navbar2 />} />
+    {/* <Route path="/Signup" element={<Navbar />} /> */}
+    </Routes>
       {/* <Navbar></Navbar> */}
       <CookiesProvider defaultSetOptions={{ path: "/" }}>
         <Routes>

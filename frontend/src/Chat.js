@@ -60,7 +60,7 @@ const Chat = () => {
         };
     }, []);
 
-    const handleChatClick = (sender,e) => {
+    const handleChatClick = (sender, e) => {
         // Check if the event and target are defined
         // console.log(e);
 
@@ -128,74 +128,88 @@ const Chat = () => {
                     <Card className="h-[calc(100vh-2rem)]  w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
                         <List>
                             {receivedata.map((chat) => (
-                                
-                                    <ListItem
-                                        key={chat.userid}
-                                        // value={chat.sender_id}
-                                        onClick={() => handleChatClick(chat.userid)}
-                                        className={`cursor-pointer text-white font-bold bg-blue-300 mb-2 hover:ring hover:bg-blue-200`}
-                                    >
-                                        {chat.username}
-                                    </ListItem>
+                                chat.userid !== user.id &&
+                                <ListItem
+                                    key={chat.userid}
+                                    // value={chat.sender_id}
+                                    onClick={() => handleChatClick(chat.userid)}
+                                    className={`cursor-pointer text-white font-bold bg-blue-300 mb-2 hover:ring hover:bg-blue-200`}
+                                >
+                                    {chat.username}
+                                </ListItem>
                             ))}
                         </List>
                     </Card>
                 </div>
                 <div className="flex flex-col w-3/4 p-3 h-screen bg-transparent">
-                <div className='flex items-center w-full m-2  max-w-[67rem] bg-blue-200 h-16 rounded-xl text-black'>{selectedname}</div>
+                    <div className='flex items-center w-full m-2  max-w-[67rem] bg-blue-200 h-16 rounded-xl text-black'>{selectedname}</div>
                     <div className=" p-4 h-96 m-2 overflow-y-scroll rounded-2xl z-1 bg-blue-400 w-auto">
                         {selectedchats === '' ? <div></div> : (
                             <div className='flex flex-col justify-start'>
                                 {/* <h1 className="text-2xl font-bold mb-4 relative">Messages</h1> */}
                                 <div className='grid w-full' >
                                     {selectedChat.map((message) => (
-                                        <div key={message.message_id}  className=''>
-                                            {message.sender_id === selectedchats && message.receiver_id == user.id ? <div className="flex flex-col scroll-mb-4 snap-end bg-blue-200 text-left rounded-4 justify-start w-1/3 p-2 mb-2"><div className='font-bold'>{message.sender_name}</div>{message.message_content}</div> : <div className='hidden'></div>}
-                                            {message.receiver_id === selectedchats && message.sender_id == user.id ? <div className="flex flex-col bg-gray-300 text-right rounded-4 justify-end ml-auto w-1/3 p-2 mb-2"><div className='font-bold'>{message.sender_name}</div>{message.message_content}</div> : <div className='hidden'></div>}
+                                        <div key={message.message_id} className=''>
+                                            {message.sender_id === selectedchats && message.receiver_id === user.id ? (
+                                                <div className="flex flex-col break-normal snap-end bg-blue-200 text-left rounded-lg justify-start w-1/3 p-2 mb-2">
+                                                    <div className='font-bold'>{message.sender_name}</div>
+                                                    <p className='max-w-full break-words'>{message.message_content}</p>
+                                                </div>
+                                            ) : (
+                                                <div className='hidden'></div>
+                                            )}
+                                            {message.receiver_id === selectedchats && message.sender_id === user.id ? (
+                                                <div className="flex flex-col break-normal snap-end bg-gray-300 text-right rounded-lg justify-end ml-auto w-1/3 p-2 mb-2">
+                                                    <div className='font-bold'>{message.sender_name}</div>
+                                                    <p className='max-w-full break-words'>{message.message_content}</p>
+                                                </div>
+                                            ) : (
+                                                <div className='hidden'></div>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         )}
-                        
+
                     </div>
                     <form name='form2' onSubmit={handleSubmit} className='' >
-                            <div className="flex w-full flex-row items-end gap- rounded-[99px] border overflow-hidden bg-white">
-                                <Textarea
-                                    onChange={handleInput} name='content'
-                                    rows={1}
-                                    resize={true}
-                                    placeholder="Your Message"
-                                    className="min-h-full border-transparent focus:border-transparent"
-                                    containerProps={{
-                                        className: "grid h-full",
-                                    }}
-                                    labelProps={{
-                                        className: "before:content-none after:content-none",
-                                    }}
-                                />
-                                <div>
-                                    <IconButton variant="text" className="rounded-full">
-                                        <button type='submit'>
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                                strokeWidth={2}
-                                                className="h-5 w-5"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
-                                                />
-                                            </svg>
-                                        </button>
-                                    </IconButton>
-                                </div>
+                        <div className="flex w-full flex-row items-end gap- rounded-[99px] border overflow-hidden bg-white">
+                            <Textarea
+                                onChange={handleInput} name='content'
+                                rows={1}
+                                resize={true}
+                                placeholder="Your Message"
+                                className="min-h-full border-transparent focus:border-transparent"
+                                containerProps={{
+                                    className: "grid h-full",
+                                }}
+                                labelProps={{
+                                    className: "before:content-none after:content-none",
+                                }}
+                            />
+                            <div>
+                                <IconButton variant="text" className="rounded-full">
+                                    <button type='submit'>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                            strokeWidth={2}
+                                            className="h-5 w-5"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                </IconButton>
                             </div>
-                        </form>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

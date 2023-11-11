@@ -57,13 +57,13 @@ const EachProdpage = () => {
     }
 
     return (
-        <div className='m-2'>
+        <div className='m-2 bg-blue'>
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
                 <div className="p-4 flex justify-center items-center">
                     <div className="w-1/2">
-                        <h2 className="text-2xl font-semibold">{data[0].title}</h2>
+                        <h2 className=" bg-blue-300 m-auto p-2 rounded-2xl text-2xl font-semibold">{data[0].title}</h2>
                         <Carousel
                             showArrows={true}
                             showStatus={true}
@@ -77,7 +77,7 @@ const EachProdpage = () => {
                                 <img
                                     src={`http://localhost:3000/${data[0].image1}`}
                                     alt="Slide 1"
-                                    className="w-fit h-fit object-fill imge" // Adjust slide width and maintain aspect ratio
+                                    className="w-fit h-fit object-fill" // Adjust slide width and maintain aspect ratio
                                 />
                                 <p className="legend">Image 1</p>
                             </div>
@@ -85,7 +85,7 @@ const EachProdpage = () => {
                                 <img
                                     src={`http://localhost:3000/${data[0].image2}`}
                                     alt="Slide 2"
-                                    className="w-fit h-fit" // Adjust slide width and maintain aspect ratio
+                                    className="w-fit h-fitobject-fill" // Adjust slide width and maintain aspect ratio
                                 />
                                 <p className="legend">Image 2</p>
                             </div>
@@ -126,7 +126,7 @@ const EachProdpage = () => {
             {data[0]&&<Map latitude={data[0].lat} longitude={data[0].lon}></Map>}
                 <div>{data[0] && <div>{data[0].seller_id}</div>}</div>
             <div>
-                <h3>Seller Reviews</h3>
+                {/* <h3>Seller Reviews</h3> */}
                 {data[0] && <SellerReview id={data[0].seller_id}></SellerReview>}
                 {/* <form onSubmit={handlereviewsubmit}>
                     <input onChange={handleInput} name='content' type='text' className='text-sm' placeholder='Enter Reviews'></input>

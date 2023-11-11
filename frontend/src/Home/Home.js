@@ -223,10 +223,10 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="bg-blue-400">
       
       <ToastContainer />
-      <div className="bg-white shadow-lg">
+      <div className="bg-blue-300 shadow-lg">
         <div className="max-w-screen-xl mx-auto px-4 py-2 flex justify-between items-center">
           <div className="flex flex-auto">
             <img src="store.png" alt="store" className="h-5 w-5" />
@@ -289,18 +289,18 @@ const Home = () => {
                 </button>
                 {isUserDropdownOpen && (
                   <div
-                    className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    className="p-2 absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-2xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="menu-button"
                     tabIndex="-1"
                   >
-                    <div className="py-1 items-center" role="none">
-                      <p className="  text-black items-center">
+                    <div className="bg-blue-400 flex justify-center rounded-xl py-1 items-center" role="none">
+                      <p className="  text-black items-center m-auto">
                         Welcome {user.username}
                       </p>
                     </div>
-                    <div className="py-1" role="none">
+                    <div className="py-1 font-bold" role="none">
                       <Link
                         to="/profile"
                         className="text-gray-700 block px-4 py-2 text-sm"
@@ -393,7 +393,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="border-b border-gray-300 py-4 relative">
+      <div className=" border-b border-gray-300 py-4 relative">
         <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center">
             <div className="relative">
@@ -474,7 +474,7 @@ const Home = () => {
               {filterProducts(products)
                 .filter(filterProductsByPrice)
                 .map((product) => (
-                  <div key={product.id}>
+                  <div key={product.id} className="p-2 rounded-2xl hover:bg-blue-500 border-2 border-blue-600">
                     <Link
                       to={`./eachprodpage/${product.id}`}
                       className="group no-underline"

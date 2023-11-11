@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(
       null,
-      "C:/Users/GAJ/Desktop/Project/New-main/New-main/frontend/public/"
+      "D:/USER DATA/Downloads/Quick/New/frontend/public"
     ); // Specify the destination folder for uploads
   },
   filename: (req, file, cb) => {
@@ -118,8 +118,12 @@ app.get("/getdetails/:userid", (req, res) => {
 
 app.get('/chat/:userid', (req, res) => {
   const id = req.params.userid;
-  const sql = "SELECT DISTINCT users.userid, users.username FROM users INNER join messaging WHERE receiver_id = ?"
-  const values = [id]
+  const sql = `SELECT DISTINCT users.userid, users.username
+  FROM users
+  INNER JOIN messaging ON users.userid = messaging.receiver_id
+  WHERE messaging.receiver_id = ? OR messaging.sender_id = ?`
+  
+  const values = [id, id]
   db.query(sql, values, (err, result) => {
     if (err) {
       console.error('Error validating data:', err);
